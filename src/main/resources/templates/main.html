@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Maz Skin Finder</title>
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <!-- Если пользователь залогинен, показать профиль -->
+            <li th:if="${LoggedIn}">
+                <a href="/profile">Профиль</a>
+            </li>
+            <!-- Если пользователь не залогинен, показать кнопки авторизации и регистрации -->
+            <li th:unless="${LoggedIn}">
+                <a href="/login">Вход</a>
+            </li>
+            <li th:unless="${LoggedIn}">
+                <a href="/register">Регистрация</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<h1>Выберите скин</h1>
+<select>
+    <option th:each="skin : ${skins}" th:text="${skin.skinName}">Скин</option>
+</select>
+</body>
+</html>
