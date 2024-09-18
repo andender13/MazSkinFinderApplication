@@ -69,4 +69,8 @@ public class UserService {
         }
         return false;
     }
+
+    public void updateTelegram(User user) {
+        userRepository.updateTelegramById(user.getId(), user.getTelegram());
+    }
 }

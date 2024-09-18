@@ -8,11 +8,9 @@
 <header>
     <nav>
         <ul>
-            <!-- Если пользователь залогинен, показать профиль -->
             <li th:if="${LoggedIn}">
                 <a href="/profile">Профиль</a>
             </li>
-            <!-- Если пользователь не залогинен, показать кнопки авторизации и регистрации -->
             <li th:unless="${LoggedIn}">
                 <a href="/login">Вход</a>
             </li>
@@ -23,9 +21,101 @@
     </nav>
 </header>
 
-<h1>Выберите скин</h1>
-<select>
-    <option th:each="skin : ${skins}" th:text="${skin.skinName}">Скин</option>
-</select>
+<!-- Форма поиска скинов -->
+<form th:if="${LoggedIn}" th:action="@{skins/startSearch}" method="post" th:object="${weapon}">
+    <h1>Выберите скин для поиска</h1>
+
+    <!-- Поле для выбора типа оружия -->
+    <label for="weaponType">Выберите оружие для поиска</label>
+    <select th:field="*{weaponType}" id="weaponType">
+        <!-- Опции будут добавляться динамически -->
+    </select><br><br>
+
+    <!-- Поле для выбора скина (будет изменяться динамически) -->
+    <label for="skinName">Выберите скин для выбранного оружия</label>
+    <select th:field="*{skinName}" id="skinName">
+        <!-- Скины будут загружаться динамически -->
+    </select><br><br>
+
+    <!-- Поле для выбора качества оружия -->
+    <label for="weaponQuality">Выберите качество оружия</label>
+    <select th:field="*{weaponQuality}" id="weaponQuality">
+        <option th:each="quality : ${weaponQualities}"
+                th:value="${quality}"
+                th:text="${quality}">
+        </option>
+    </select><br><br>
+
+    <label for="statTrack">StatTrack</label>
+    <select th:field="*{statTrack}" id="statTrack">
+        <option th:each="statTrack : ${statTrack}"
+                th:value="${statTrack}"
+                th:text="${statTrack}">
+        </option>
+    </select><br><br>
+
+    <!-- Поля для флоат значений -->
+    <span>
+        <label for="floatLeft">Введите левую границу флоата</label>
+        <input th:field="*{weaponFloat.leftFloatBorder}" id="floatLeft" type="number" min="0" max="1" step="0.01">
+        <label for="floatRight">Введите правую границу флоата</label>
+        <input th:field="*{weaponFloat.rightFloatBorder}" id="floatRight" type="number" min="0" max="1" step="0.01">
+    </span><br><br>
+
+    <!-- Кнопка отправки формы -->
+    <button type="submit" id="submitBtn">Начать поиск</button>
+</form>
+
+<!-- Скрипт для динамической подгрузки данных -->
+<script>
+    // Функция для загрузки данных с сервера
+    async function loadWeaponData() {
+        try {
+            const response = await fetch('/skins/skinNames');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Fetch error:', error);
+            return {};
+        }
+    }
+
+    // Функция для заполнения данных
+    async function initialize() {
+        const weaponData = await loadWeaponData();
+        const weaponTypeSelect = document.getElementById('weaponType');
+        const skinNameSelect = document.getElementById('skinName');
+
+        // Заполнение поля выбора типа оружия
+        Object.keys(weaponData).forEach(type => {
+            const option = document.createElement('option');
+            option.value = type;
+            option.text = type;
+            weaponTypeSelect.appendChild(option);
+        });
+
+        // Обновление списка скинов при изменении типа оружия
+        weaponTypeSelect.addEventListener('change', function() {
+            const selectedType = this.value;
+            const skins = weaponData[selectedType] || [];
+            skinNameSelect.innerHTML = '';
+            skins.forEach(skin => {
+                const option = document.createElement('option');
+                option.value = skin;
+                option.text = skin;
+                skinNameSelect.appendChild(option);
+            });
+        });
+
+        // Инициализация скинов при первой загрузке
+        weaponTypeSelect.dispatchEvent(new Event('change'));
+    }
+
+    // Инициализация при загрузке страницы
+    window.onload = initialize;
+</script>
+
 </body>
 </html>

@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Table(name = "users")
 public class User {
 
@@ -32,6 +33,9 @@ public class User {
 
     @Column(nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
+
+    @Column(nullable = true)
+    private String telegram;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

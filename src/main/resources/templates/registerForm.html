@@ -19,10 +19,11 @@
 
     <button type="submit">Register</button>
 </form>
+<button onclick="window.location.href= '/'">Назад</button>
 <p id="message"></p>
 
 <script>
-    document.getElementById('registerForm').addEventListener('submit', function(event) {
+    document.getElementById('registerForm').addEventListener('submit', function (event) {
         event.preventDefault(); // Останавливаем обычную отправку формы
 
         var formData = new FormData(this);

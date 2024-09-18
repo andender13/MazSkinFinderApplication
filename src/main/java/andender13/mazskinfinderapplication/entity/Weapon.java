@@ -6,14 +6,15 @@ import andender13.mazskinfinderapplication.enums.WeaponQuality;
 import andender13.mazskinfinderapplication.enums.WeaponType;
 import andender13.mazskinfinderapplication.model.WeaponFloat;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Embeddable
+@ToString
 @Entity
 @Getter
 @Setter
 @Table(name = "weapons")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Weapon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<body>
+<form method="post" th:action="@{/telegram/setTelegram}" th:object="${user}">
+    <h1 th:text="${user.username}"></h1>
+    <p th:text="${user.email}"></p>
+    <p th:text="${user.password}"></p>
+
+    <!-- Передаем значения через скрытые поля -->
+    <input type="hidden" th:field="*{username}">
+    <input type="hidden" th:field="*{email}">
+    <input type="hidden" th:field="*{password}">
+    <input type="hidden" th:field="*{status}">
+    <input type="hidden" th:field="*{id}">
+    <input type="hidden" th:field="*{createdAt}">
+
+    <!-- Поле для ввода Telegram -->
+    <label for="telegram">Телеграм ChatId для нотификации</label>
+    <input th:field="*{telegram}" id="telegram" type="text"><br>
+    <label for="botUrl">Здесь можно получить ChatId</label><br>
+    <a href="https://t.me/SkinNotificatorBot" id="botUrl" target="_blank">Бот для получения chatId</a>
+    <button type="submit">Сохранить</button>
+</form>
+<button onclick="window.location.href= '/'">Назад</button>
+</body>
+
+

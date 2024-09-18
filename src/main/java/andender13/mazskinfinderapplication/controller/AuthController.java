@@ -1,11 +1,15 @@
 package andender13.mazskinfinderapplication.controller;
 
+import andender13.mazskinfinderapplication.dto.ResponseMessageDto;
 import andender13.mazskinfinderapplication.dto.UserDto;
 import andender13.mazskinfinderapplication.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -21,9 +25,9 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@RequestBody UserDto userDto) {
         boolean isSuccess = userService.registerUser(userDto.getUsername(), userDto.getPassword(), userDto.getEmail());
         if (isSuccess) {
-            return ResponseEntity.ok(new ResponseMessage("User registered successfully", true));
+            return ResponseEntity.ok(new ResponseMessageDto("User registered successfully", true));
         } else {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseMessage("User already exists", false));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseMessageDto("User already exists", false));
         }
     }
 
@@ -38,22 +42,4 @@ public class AuthController {
         }
     }
 
-    // DTO for response message
-    static class ResponseMessage {
-        private String message;
-        private boolean success;
-
-        public ResponseMessage(String message, boolean success) {
-            this.message = message;
-            this.success = success;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public boolean isSuccess() {
-            return success;
-        }
-    }
 }
