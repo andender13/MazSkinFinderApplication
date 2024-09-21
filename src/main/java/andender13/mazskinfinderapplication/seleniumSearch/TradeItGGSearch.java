@@ -5,7 +5,9 @@ import andender13.mazskinfinderapplication.enums.CSSLibrary;
 import andender13.mazskinfinderapplication.enums.StatTrack;
 import andender13.mazskinfinderapplication.telegram.TelegramNotificationBot;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.nodes.Element;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -29,7 +31,7 @@ public class TradeItGGSearch {
         System.setProperty("webdriver.chrome.driver", chromeDriverPath);
         WebDriver driver = getWebDriver();
         driver.manage().window().maximize();
-        System.out.println("Starting search for " + weapon.getWeaponType().getStringType() + " " + weapon.getSkinName());
+        System.out.println("Starting search for " + weapon.getSkin().getGunType() + " " + weapon.getSkin().getName());
         try {
             String TradeItGGUrl = "https://tradeit.gg/ru/csgo/trade";
             driver.get(TradeItGGUrl);
@@ -76,7 +78,7 @@ public class TradeItGGSearch {
             WebElement searchField = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(CSSLibrary.BOT_INVENTORY_SEARCH_CSS)));
             searchField.click();
 
-            searchField.sendKeys(weapon.getWeaponType().getStringType() + " " + weapon.getSkinName());
+            searchField.sendKeys(weapon.getSkin().getGunType() + " " + weapon.getSkin().getName());
             searchField.sendKeys(org.openqa.selenium.Keys.RETURN);
 
 
@@ -102,16 +104,16 @@ public class TradeItGGSearch {
                         log.error(e.getMessage(), e);
                     }
                     List<WebElement> foundedGuns = driver.findElements(By.cssSelector(CSSLibrary.GUN_INFO_WIDGET_CSS));
-                    if (!foundedGuns.getFirst().getText().contains(weapon.getSkinName())) {
-                        System.out.println("\nNothing found for:" + weapon.getWeaponType().getStringType() + " " + weapon.getSkinName());
+                    if (!foundedGuns.getFirst().getText().contains(weapon.getSkin().getName())) {
+                        System.out.println("\nNothing found for:" + weapon.getSkin().getGunType() + " " + weapon.getSkin().getName());
                         return;
                     }
                     for (WebElement foundedGun : foundedGuns) {
                         String gun;
                         if (foundedGun.equals(foundedGuns.getFirst())) {
-                            gun = "Founded " + weapon.getWeaponType().getStringType() + " " + foundedGun.getText();
+                            gun = "Founded " + weapon.getSkin().getGunType() + " " + foundedGun.getText();
                         } else {
-                            gun = "Founded " + weapon.getWeaponType().getStringType() + " " + weapon.getSkinName() + "\n" + foundedGun.getText();
+                            gun = "Founded " +weapon.getSkin().getGunType() + " " + weapon.getSkin().getName() + "\n" + foundedGun.getText();
                         }
                         System.out.println(gun);
                         telegramNotification.sendMessage(gun + "\n" + TradeItGGUrl, "685337904");
@@ -135,7 +137,7 @@ public class TradeItGGSearch {
         }
     }
 
-    private static WebDriver getWebDriver() {
+    static WebDriver getWebDriver() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
         options.addArguments("--window-size=1920,1080");

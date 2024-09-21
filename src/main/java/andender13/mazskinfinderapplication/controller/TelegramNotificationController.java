@@ -16,7 +16,6 @@ public class TelegramNotificationController {
 
     @PostMapping("/setTelegram")
     public String setTelegram(@ModelAttribute("user") User user) {
-        System.out.println(user);
         userService.updateTelegram(user);
         return "redirect:/profile";
     }

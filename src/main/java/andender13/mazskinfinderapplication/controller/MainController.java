@@ -5,7 +5,7 @@ import andender13.mazskinfinderapplication.entity.Weapon;
 import andender13.mazskinfinderapplication.enums.AuthorizationStatus;
 import andender13.mazskinfinderapplication.enums.StatTrack;
 import andender13.mazskinfinderapplication.enums.WeaponQuality;
-import andender13.mazskinfinderapplication.enums.WeaponType;
+import andender13.mazskinfinderapplication.service.SkinService;
 import andender13.mazskinfinderapplication.service.UserService;
 import andender13.mazskinfinderapplication.service.WeaponService;
 import jakarta.servlet.http.HttpSession;
@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController {
     @Autowired
-    WeaponService weaponService;
+    private WeaponService weaponService;
     @Autowired
-    UserService userService;
+    private UserService userService;
+    @Autowired
+    private SkinService skinService;
 
     @GetMapping("/")
     public String mazSkinFinderSite(Model model, HttpSession session) {
@@ -29,8 +31,8 @@ public class MainController {
                 AuthorizationStatus.AUTHORIZED);
         boolean isAuthorized = user != null;
         model.addAttribute("LoggedIn", isAuthorized);
+        model.addAttribute("weaponTypes", skinService.getAllGunTypes());
         model.addAttribute("weapon", new Weapon());
-        model.addAttribute("weaponTypes", WeaponType.values());
         model.addAttribute("weaponQualities", WeaponQuality.values());
         model.addAttribute("statTrack", StatTrack.values());
         return "main";
