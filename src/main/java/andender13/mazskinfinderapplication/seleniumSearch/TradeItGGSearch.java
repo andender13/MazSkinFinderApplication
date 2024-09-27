@@ -42,7 +42,7 @@ public class TradeItGGSearch {
                     button.click();
                     List<WebElement> statTrackButtons = driver.findElements(By.cssSelector(CSSLibrary.MIDDLE_BUTTON_INPUT_CSS));
                     if (weapon.getStatTrack() == StatTrack.NO) {
-                        statTrackButtons.get(0).click();
+                        statTrackButtons.getFirst().click();
                     } else {
                         statTrackButtons.get(1).click();
                     }
@@ -104,13 +104,13 @@ public class TradeItGGSearch {
                         log.error(e.getMessage(), e);
                     }
                     List<WebElement> foundedGuns = driver.findElements(By.cssSelector(CSSLibrary.GUN_INFO_WIDGET_CSS));
-                    if (!foundedGuns.get(0).getText().contains(weapon.getSkin().getName())) {
+                    if (!foundedGuns.getFirst().getText().contains(weapon.getSkin().getName())) {
                         System.out.println("\nNothing found for:" + weapon.getSkin().getGunType() + " " + weapon.getSkin().getName());
                         return;
                     }
                     for (WebElement foundedGun : foundedGuns) {
                         String gun;
-                        if (foundedGun.equals(foundedGuns.get(0))) {
+                        if (foundedGun.equals(foundedGuns.getFirst())) {
                             gun = "Founded " + weapon.getSkin().getGunType() + " " + foundedGun.getText();
                         } else {
                             gun = "Founded " +weapon.getSkin().getGunType() + " " + weapon.getSkin().getName() + "\n" + foundedGun.getText();
