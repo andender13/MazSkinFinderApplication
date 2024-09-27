@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.List;
 
 @Builder
-@ToString
+@ToString(exclude = "weapons")
 @Entity
 @Data
 @AllArgsConstructor

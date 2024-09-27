@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -28,4 +29,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Transactional
     @Query("UPDATE User u SET u.telegram = :telegram WHERE u.id = :id")
     void updateTelegramById(@Param("id") Long id, @Param("telegram") String telegram);
+
+    @Query("SELECT u FROM User u JOIN FETCH u.weapon w JOIN FETCH w.skin s WHERE w.isCanceled = FALSE AND u.telegram IS NOT NULL")
+    List<User> findAllSearchReady();
+
+
+
 }

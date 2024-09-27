@@ -5,13 +5,14 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = "weapon")
 @Table(name = "users")
 public class User {
 
@@ -40,6 +41,9 @@ public class User {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private AuthorizationStatus status = AuthorizationStatus.UNAUTHORIZED;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Weapon> weapon;
 
     public User(String username, String password, String email) {
         this.password = password;

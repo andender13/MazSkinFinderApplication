@@ -3,9 +3,11 @@ package andender13.mazskinfinderapplication.service;
 import andender13.mazskinfinderapplication.entity.User;
 import andender13.mazskinfinderapplication.enums.AuthorizationStatus;
 import andender13.mazskinfinderapplication.repo.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,6 +32,10 @@ public class UserService {
             return userRepository.findUserByUsername(username).get();
         }
         return null;
+    }
+
+    public List<User> findAllSearchReady() {
+        return userRepository.findAllSearchReady();
     }
 
     public User findUserByStatus(AuthorizationStatus authorizationStatus) {

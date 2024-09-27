@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SkinRepository extends JpaRepository<Skin, Long> {
@@ -17,4 +18,6 @@ public interface SkinRepository extends JpaRepository<Skin, Long> {
 
     @Query("SELECT DISTINCT s.name FROM Skin s WHERE s.gunType =:gunType")
     List<String> findSkinNamesByGunType(@Param("gunType") String gunType);
+
+    Optional<Skin> findByGunTypeAndName(String gunType, String name);
 }

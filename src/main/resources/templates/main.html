@@ -57,7 +57,7 @@
         </option>
     </select><br><br>
 
-    <!-- Поля для флоат значений -->
+
     <span>
         <label for="floatLeft">Введите левую границу флоата</label>
         <input th:field="*{weaponFloat.leftFloatBorder}" id="floatLeft" type="number" min="0" max="1" step="0.001">
@@ -89,7 +89,7 @@
         const skinNameSelect = document.getElementById('skinName');
 
         // Обработчик события для выбора типа оружия
-        weaponTypeSelect.addEventListener('change', async function() {
+        weaponTypeSelect.addEventListener('change', async function () {
             const selectedType = this.value;
 
             // Загрузка скинов на основе выбранного типа оружия

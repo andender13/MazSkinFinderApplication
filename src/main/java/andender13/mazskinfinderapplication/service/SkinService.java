@@ -16,12 +16,15 @@ public class SkinService {
         skinRepository.save(skin);
     }
 
-
     public List<String> getAllGunTypes() {
         return skinRepository.findDistinctGunTypes();
     }
 
     public List<String> getAllSkinNamesByType(String type) {
         return skinRepository.findSkinNamesByGunType(type);
+    }
+
+    public Skin getSkinByGunTypeAndName(String gunType, String name) {
+        return skinRepository.findByGunTypeAndName(gunType, name).orElse(null);
     }
 }

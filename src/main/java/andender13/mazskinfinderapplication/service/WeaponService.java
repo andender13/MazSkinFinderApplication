@@ -17,8 +17,16 @@ public class WeaponService {
         return weaponRepository.findAll();
     }
 
+    public List<Weapon> getAllWeaponsByUserId(String username) {
+        return weaponRepository.findAllByUserIdWithSkins(username);
+    }
+
     public Weapon getWeaponById(Long id) {
-        ;
+
         return weaponRepository.findById(id).orElse(null);
+    }
+
+    public void saveWeapon(Weapon weapon) {
+        weaponRepository.save(weapon);
     }
 }
