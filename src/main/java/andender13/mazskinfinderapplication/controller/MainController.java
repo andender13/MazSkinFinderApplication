@@ -10,6 +10,9 @@ import andender13.mazskinfinderapplication.service.UserService;
 import andender13.mazskinfinderapplication.service.WeaponService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,17 +27,26 @@ public class MainController {
     private SkinService skinService;
 
     @GetMapping("/")
-    public String mazSkinFinderSite(Model model, HttpSession session) {
-        model.addAttribute("skins", weaponService.getAllWeapons());
-        User user = userService.findUserByUsernameAndStatus(
-                String.valueOf(session.getAttribute("username")),
-                AuthorizationStatus.AUTHORIZED);
-        boolean isAuthorized = user != null;
+    public String mazSkinFinderSite(Model model) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("Authentication при новом запросе: " + auth);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAuthorized = authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken);
+        System.out.println(isAuthorized);
+        if (isAuthorized) {
+            String username = authentication.getName(); // Получаем имя пользователя
+            User user = userService.findUserByUsernameAndStatus(username, AuthorizationStatus.AUTHORIZED);
+
+            model.addAttribute("skins", weaponService.getAllWeapons());
+            model.addAttribute("weaponTypes", skinService.getAllGunTypes());
+            model.addAttribute("weapon", new Weapon());
+            model.addAttribute("weaponQualities", WeaponQuality.values());
+            model.addAttribute("statTrack", StatTrack.values());
+            model.addAttribute("currentUser", user); // Передаем информацию о пользователе в модель
+        }
+
         model.addAttribute("LoggedIn", isAuthorized);
-        model.addAttribute("weaponTypes", skinService.getAllGunTypes());
-        model.addAttribute("weapon", new Weapon());
-        model.addAttribute("weaponQualities", WeaponQuality.values());
-        model.addAttribute("statTrack", StatTrack.values());
         return "main";
     }
 
@@ -49,10 +61,15 @@ public class MainController {
     }
 
     @GetMapping("/profile")
-    public String showProfileF(Model model, HttpSession session) {
-        User user = userService.findUserByUsername(session.getAttribute("username").toString());
-        model.addAttribute("user", user);
-        return "profile";
+    public String showProfileF(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
+            User user = userService.findUserByUsername(username);
+            model.addAttribute("user", user);
+        }
+        return "profile"; // Возвращаем представление профиля
     }
 
 

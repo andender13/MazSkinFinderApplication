@@ -22,7 +22,7 @@ public class TradeItGGSearchRunner {
 
     private final ExecutorService executorService = Executors.newFixedThreadPool(10);
 
-    @Scheduled(fixedRate = 50000)
+    @Scheduled(fixedRate = 500000)
     void run()  {
         List<User> usersToSearch = userService.findAllSearchReady();
 

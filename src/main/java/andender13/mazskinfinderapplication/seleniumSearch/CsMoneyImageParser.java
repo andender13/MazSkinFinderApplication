@@ -1,5 +1,6 @@
 package andender13.mazskinfinderapplication.seleniumSearch;
 
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import static andender13.mazskinfinderapplication.seleniumSearch.TradeItGGSearch.getWebDriver;
 
+@Slf4j
 @Component
 public class CsMoneyImageParser {
     public List<String> startImageParse(String url) {
@@ -27,7 +29,7 @@ public class CsMoneyImageParser {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                log.error(e.getMessage(), e);
             }
 
             List<WebElement> elements = driver.findElements(By.cssSelector(".kxmatkcipwonxvwweiqqdoumxg"));

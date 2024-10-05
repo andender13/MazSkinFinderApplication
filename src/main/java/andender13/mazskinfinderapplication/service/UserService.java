@@ -3,8 +3,7 @@ package andender13.mazskinfinderapplication.service;
 import andender13.mazskinfinderapplication.entity.User;
 import andender13.mazskinfinderapplication.enums.AuthorizationStatus;
 import andender13.mazskinfinderapplication.repo.UserRepository;
-import jakarta.transaction.Transactional;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,11 +12,15 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    public void saveUser(User user) {
+        userRepository.save(user);
     }
 
     public User findUserByUsername(String username) {
@@ -68,15 +71,23 @@ public class UserService {
         if (userOpt.isPresent()) {
             User user = userOpt.get();
             boolean isLoggedIn = passwordEncoder.matches(password, user.getPassword());
-            if (isLoggedIn) {
-                userRepository.updateStatusById(user.getId(), AuthorizationStatus.AUTHORIZED);
+            if (isLoggedIn && user.getStatus().equals(AuthorizationStatus.REGISTERED)) {
+                updateStatusById(user.getId(), AuthorizationStatus.AUTHORIZED);
                 return true;
             }
         }
         return false;
     }
 
+    public void updateStatusById(Long id, AuthorizationStatus status) {
+        userRepository.updateStatusById(id, status);
+    }
+
     public void updateTelegram(User user) {
         userRepository.updateTelegramById(user.getId(), user.getTelegram());
+    }
+
+    public User getUserByEmailIdAndStatus(String emailId, AuthorizationStatus status) {
+        return userRepository.findByEmailIdAndStatus(emailId, status).orElse(null);
     }
 }

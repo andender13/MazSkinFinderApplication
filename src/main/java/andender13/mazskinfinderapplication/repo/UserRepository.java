@@ -33,6 +33,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u JOIN FETCH u.weapon w JOIN FETCH w.skin s WHERE w.isCanceled = FALSE AND u.telegram IS NOT NULL")
     List<User> findAllSearchReady();
 
+    Optional<User> findByEmailIdAndStatus(String emailId, AuthorizationStatus status);
 
 
 }

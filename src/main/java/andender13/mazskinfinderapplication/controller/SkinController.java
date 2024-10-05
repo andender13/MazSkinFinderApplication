@@ -1,7 +1,5 @@
 package andender13.mazskinfinderapplication.controller;
 
-import andender13.mazskinfinderapplication.entity.Skin;
-import andender13.mazskinfinderapplication.entity.User;
 import andender13.mazskinfinderapplication.entity.Weapon;
 import andender13.mazskinfinderapplication.seleniumSearch.TradeItGGSearch;
 import andender13.mazskinfinderapplication.service.SkinService;
