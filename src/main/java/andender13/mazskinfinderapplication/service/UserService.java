@@ -2,7 +2,9 @@ package andender13.mazskinfinderapplication.service;
 
 import andender13.mazskinfinderapplication.entity.User;
 import andender13.mazskinfinderapplication.enums.AuthorizationStatus;
+import andender13.mazskinfinderapplication.enums.Role;
 import andender13.mazskinfinderapplication.repo.UserRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,17 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @PostConstruct
+    public void init() {
+        if (userRepository.findUserByUsername("admin").isEmpty()) {
+            User admin = new User();
+            admin.setUsername("admin");
+            admin.setPassword(passwordEncoder.encode("123123"));
+            admin.setEmail("admin@gmail.com");
+            admin.setRole(Role.ROLE_ADMIN);
+            userRepository.save(admin);
+        }
+    }
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;

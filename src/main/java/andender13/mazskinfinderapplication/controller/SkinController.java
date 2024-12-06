@@ -7,9 +7,11 @@ import andender13.mazskinfinderapplication.service.UserService;
 import andender13.mazskinfinderapplication.service.WeaponService;
 import andender13.mazskinfinderapplication.utility.skinParser.JSoupCsMoneyWikiParser;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -17,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 
+@Slf4j
 @RestController
 @RequestMapping("/skins")
 public class SkinController {
@@ -36,9 +39,9 @@ public class SkinController {
     }
 
     @PostMapping("/startSearch")
-    public ResponseEntity<?> startSearch(@ModelAttribute("weapon") Weapon weapon, HttpSession session) {
+    public ResponseEntity<?> startSearch(@ModelAttribute("weapon") Weapon weapon) {
         System.out.println(weapon);
-        weapon.setUser(userService.findUserByUsername(session.getAttribute("username").toString()));
+        weapon.setUser(userService.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
         weapon.setSkin(skinService.getSkinByGunTypeAndName(weapon.getSkin().getGunType(), weapon.getSkin().getName()));
         weapon.setSearchStarted(LocalDateTime.now());
         weaponService.saveWeapon(weapon);

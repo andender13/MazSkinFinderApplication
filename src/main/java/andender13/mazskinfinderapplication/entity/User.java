@@ -1,9 +1,11 @@
 package andender13.mazskinfinderapplication.entity;
 
 import andender13.mazskinfinderapplication.enums.AuthorizationStatus;
+import andender13.mazskinfinderapplication.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
@@ -44,6 +46,9 @@ public class User implements UserDetails {
 
     @Column(nullable = true)
     private String telegram;
+    @Column()
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -60,8 +65,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Здесь можно вернуть роли пользователя, если они есть
-        return List.of(() -> "ROLE_USER", () -> "ROLE_ADMIN");
+        return List.of(new SimpleGrantedAuthority(role.getStringValue()));
     }
 
     @Override

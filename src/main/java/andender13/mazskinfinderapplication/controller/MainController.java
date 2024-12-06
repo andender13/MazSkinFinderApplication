@@ -8,7 +8,6 @@ import andender13.mazskinfinderapplication.enums.WeaponQuality;
 import andender13.mazskinfinderapplication.service.SkinService;
 import andender13.mazskinfinderapplication.service.UserService;
 import andender13.mazskinfinderapplication.service.WeaponService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,8 +28,6 @@ public class MainController {
     @GetMapping("/")
     public String mazSkinFinderSite(Model model) {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("Authentication при новом запросе: " + auth);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         boolean isAuthorized = authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken);
         System.out.println(isAuthorized);
@@ -69,7 +66,7 @@ public class MainController {
             User user = userService.findUserByUsername(username);
             model.addAttribute("user", user);
         }
-        return "profile"; // Возвращаем представление профиля
+        return "profile";
     }
 
 

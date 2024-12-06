@@ -52,9 +52,9 @@ public class WebSecurityConfiguration {
                 .logout(LogoutConfigurer::permitAll)
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))  // Если необходимо, создаем сессию
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .securityContext(securityContext -> securityContext
-                        .securityContextRepository(new HttpSessionSecurityContextRepository())) ; // Сохраняем
+                        .securityContextRepository(new HttpSessionSecurityContextRepository())) ;
 
         return http.build();
     }

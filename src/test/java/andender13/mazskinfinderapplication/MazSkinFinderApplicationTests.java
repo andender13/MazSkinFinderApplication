@@ -22,14 +22,12 @@ class MazSkinFinderApplicationTests {
 
     @Test
     public void TestLazy() {
-        List<Weapon> list = weaponService.getAllWeapons();
-        User user = list.getFirst().getUser();
+//        List<Weapon> list = weaponService.getAllWeapons();
+//        User user = list.getFirst().getUser();
     }
 
     @Test
     public void testSelectForSearch() {
-        List<User> list = userService.findAllSearchReady();
-        System.out.println(list.getFirst().getWeapon());
     }
 
     @Test

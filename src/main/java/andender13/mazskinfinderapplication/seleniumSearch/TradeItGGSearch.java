@@ -31,7 +31,7 @@ public class TradeItGGSearch {
         driver.manage().window().maximize();
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));  // Увеличение времени ожидания загрузки страницы
 
-        System.out.println("Starting search for " + weapon.getSkin().getGunType() + " " + weapon.getSkin().getName());
+        log.debug("Starting search for {}", weapon.getSkin().getGunType() + weapon.getSkin().getName());
         try {
             String TradeItGGUrl = "https://tradeit.gg/ru/csgo/trade";
             driver.get(TradeItGGUrl);
@@ -113,7 +113,7 @@ public class TradeItGGSearch {
                         if (foundedGun.equals(foundedGuns.getFirst())) {
                             gun = "Founded " + weapon.getSkin().getGunType() + " " + foundedGun.getText();
                         } else {
-                            gun = "Founded " +weapon.getSkin().getGunType() + " " + weapon.getSkin().getName() + "\n" + foundedGun.getText();
+                            gun = "Founded " + weapon.getSkin().getGunType() + " " + weapon.getSkin().getName() + "\n" + foundedGun.getText();
                         }
                         System.out.println(gun);
 //                        telegramNotification.sendMessage(gun + "\n" + TradeItGGUrl, "685337904");
